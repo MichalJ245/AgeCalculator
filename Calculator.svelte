@@ -1,5 +1,13 @@
 <script lang="ts">
 	import { twMerge } from 'tailwind-merge';
+	import {
+		subYears,
+		subMonths,
+		subDays,
+		differenceInYears,
+		differenceInMonths,
+		differenceInDays
+	} from 'date-fns';
 	//import arrowDirectory from '/images/icon-arrow.svg';
 	let day: number = $state(0);
 	let month: number = $state(0);
@@ -13,6 +21,7 @@
 	var countedDays: number | '--' = $state('--');
 	const fieldCorrect = 'border-gray-400';
 	const fieldError = 'border-red-400';
+	var age: Date;
 	function fieldStyle(error: boolean) {
 		return twMerge(
 			'border-1 w-32 h-12 rounded-[8px] mx-2 text-xl font-bold',
@@ -53,34 +62,69 @@
 		}
 	}
 	function countAge() {
+		age = new Date(year, month, day);
+		countedDays = differenceInDays(currentDate, age);
+		countedMonths = differenceInMonths(currentDate, age);
+		countedYears = differenceInYears(currentDate, age);
+	}
+	function send() {
 		monthValidate();
 		dayValidate();
 		yearValidate();
 		if (!dayError && !monthError && !yearError) {
-			countedYears = currentDate.getFullYear() - year;
-			console.log("countedYears:"+countedYears);
-			countedMonths = currentDate.getMonth() - (month-1);
-			console.log("countedMonths:"+countedMonths)
-			countedDays = currentDate.getDate() - day;
-			console.log("countedDays:"+countedDays)
-			if (countedDays < 0) {
-				countedMonths--;
-				let previousMonth = new Date(year, (month-2), 0).getDate();
-				console.log(previousMonth)
-				countedDays += previousMonth;
-				console.log("currentDate:"+currentDate.getDate());
-				console.log("countedDays:"+countedDays)
-			}
-			if (countedMonths < 0) {
-				countedYears--;
-				countedMonths += 12;
-			}
+			countAge();
+			let formEmail;
+			let handler = document.getElementById('email') as HTMLInputElement;
+			formEmail = handler.value;
+			let formName;
+			handler = document.getElementById('name') as HTMLInputElement;
+			formName = handler.value;
+			let formCity;
+			handler = document.getElementById('city') as HTMLInputElement;
+			formCity = handler.value;
+			console.log(formEmail);
+			console.log(formName);
+			console.log(formCity);
+			fetch('http://192.168.0.216:8000/users/api/submissions/', {
+				method: 'GET',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					name: formName,
+					email: formEmail,
+					city: formCity,
+					birthday: age // tutaj przesyła wiek
+				})
+			});
 		}
 	}
 </script>
 
 <div class="m-auto h-full w-1/2">
-	<div class="m-12 flex flex-row">
+	<form class="m-12 grid grid-cols-3 grid-rows-3" method="get" onsubmit={send} autocomplete="off">
+		<div>
+			<p class="m-2 font-[poppins] font-bold text-gray-500">NAME</p>
+			<input
+				type="text"
+				id="name"
+				class="border-1 mx-2 h-12 w-32 rounded-[8px] text-xl font-bold"
+			/>
+		</div>
+		<div>
+			<p class="m-2 font-[poppins] font-bold text-gray-500">EMAIL</p>
+			<input
+				type="email"
+				id="email"
+				class="border-1 mx-2 h-12 w-32 rounded-[8px] text-xl font-bold"
+			/>
+		</div>
+		<div>
+			<p class="m-2 font-[poppins] font-bold text-gray-500">CITY</p>
+			<input
+				type="text"
+				id="city"
+				class="border-1 mx-2 h-12 w-32 rounded-[8px] text-xl font-bold"
+			/>
+		</div>
 		<div>
 			<p class="m-2 font-[poppins] font-bold text-gray-500">DAY</p>
 			<input type="text" id="day" class={fieldStyle(dayError)} placeholder="DD" />
@@ -93,27 +137,27 @@
 			<p class="m-2 font-[poppins] font-bold text-gray-500">YEAR</p>
 			<input type="text" id="year" class={fieldStyle(yearError)} placeholder="YYYY" />
 		</div>
-	</div>
-	<div class="flex flex-row items-center">
-		<hr class="w-3/4" />
-		<button
-			class="justify-content flex h-24 w-24 rounded-[50px] bg-purple-500 hover:bg-black"
-			onclick={countAge}
-		>
-			<img src="http://localhost:5173/icon-arrow.svg" alt="arrow" class="m-auto h-14 w-14" />
-		</button>
+		<div class="col-span-3 flex flex-row items-center">
+			<hr class="w-3/4" />
+			<button
+				type="submit"
+				class="justify-content flex h-24 w-24 rounded-[50px] bg-purple-500 hover:bg-black"
+			>
+				<img src="http://localhost:5173/icon-arrow.svg" alt="arrow" class="m-auto h-14 w-14" />
+			</button>
+		</div>
+	</form>
+	<div class="flex flex-row">
+		<p class="text-8xl font-extrabold text-purple-500">{countedYears}</p>
+		<p class="text-8xl">years</p>
 	</div>
 	<div class="flex flex-row">
-		<p>{countedYears}</p>
-		<p>years</p>
+		<p class="text-8xl font-extrabold text-purple-500">{countedMonths}</p>
+		<p class="text-8xl">months</p>
 	</div>
 	<div class="flex flex-row">
-		<p>{countedMonths}</p>
-		<p>months</p>
-	</div>
-	<div class="flex flex-row">
-		{countedDays}
-		<p>days</p>
+		<p class="text-8xl font-extrabold text-purple-500">{countedDays}</p>
+		<p class="text-8xl">days</p>
 	</div>
 </div>
 <!--<div class="attribution">
