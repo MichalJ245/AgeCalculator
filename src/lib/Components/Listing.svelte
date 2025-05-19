@@ -6,9 +6,7 @@
 
         const json = await response.json();
 
-        console.log(json)
         listOfItems = json;
-        console.log(typeof listOfItems);
         
     }
 
