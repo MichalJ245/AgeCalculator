@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Listing from '$lib/Components/Listing.svelte';
+	import Listing from '$lib/Components/Listing.svelte';
 </script>
-<Listing />
 
+<Listing />

@@ -1,11 +1,6 @@
 <script lang="ts">
 	import { twMerge } from 'tailwind-merge';
-	import {
-		differenceInYears,
-		differenceInMonths,
-		differenceInDays,
-		format
-	} from 'date-fns';
+	import { differenceInYears, differenceInMonths, differenceInDays, format } from 'date-fns';
 	let day: number = $state(0);
 	let month: number = $state(0);
 	let year: number = $state(0);
@@ -61,17 +56,17 @@
 	}
 	function countAge() {
 		age = new Date(year, month, day);
-		aaa = format(age,"yyyy-MM-dd");
-		console.log(aaa+ typeof aaa);
+		aaa = format(age, 'yyyy-MM-dd');
+		console.log(aaa + typeof aaa);
 		countedYears = differenceInYears(currentDate, age);
-		let help = new Date((year + countedYears),(month-1),day);
+		let help = new Date(year + countedYears, month - 1, day);
 		console.log(help);
 		countedMonths = differenceInMonths(currentDate, help);
-		let help2 = new Date((year+countedYears),(month+countedMonths-1),day);
+		let help2 = new Date(year + countedYears, month + countedMonths - 1, day);
 		console.log(help2);
 		countedDays = differenceInDays(currentDate, help2);
 	}
-	function send(e:any) {
+	function send(e: any) {
 		e.preventDefault();
 		monthValidate();
 		dayValidate();
@@ -167,6 +162,7 @@
 	</div>
 </div>
 <div class="attribution">
-    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
-    Coded by MichalJ245.
-  </div>
+	Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank"
+		>Frontend Mentor</a
+	>. Coded by MichalJ245.
+</div>

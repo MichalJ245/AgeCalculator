@@ -4,7 +4,7 @@
 	let { children } = $props();
 </script>
 
-<a href="/add-age" class="bg-purple-500 text-white p-2 rounded-[50px] m-2">add age</a>
-<a href="/listing" class="bg-purple-500 text-white p-2 rounded-[50px] m-2">listing</a>
+<a href="/add-age" class="m-2 rounded-[50px] bg-purple-500 p-2 text-white">add age</a>
+<a href="/listing" class="m-2 rounded-[50px] bg-purple-500 p-2 text-white">listing</a>
 
 {@render children()}
