@@ -3,8 +3,7 @@
 	import '../app.css';
 	let dark = $state(false);
 	onMount(()=>{
-	dark = localStorage.getItem('theme') === 'dark' || false;
-	console.log(localStorage.getItem('theme'));
+	dark = localStorage.getItem('theme') === 'dark';
 	document.documentElement.classList.toggle('dark',dark);
 	});
 function toggleDarkMode()
