@@ -50,6 +50,6 @@
 				</div>
 			</div>
 	{:else}
-		<p>Brak danych</p>
+		<p class="text-center">Brak danych, lub nie udało się nawiązać połączenia z serwerem</p>
 	{/if}
 </div>
