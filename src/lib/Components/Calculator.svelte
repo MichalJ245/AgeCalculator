@@ -11,13 +11,13 @@
 	var countedYears: number | '--' = $state('--');
 	var countedMonths: number | '--' = $state('--');
 	var countedDays: number | '--' = $state('--');
-	const fieldCorrect = 'border-gray-400';
-	const fieldError = 'border-red-400';
+	const fieldCorrect = 'border-gray-400 dark:text-gray-200 ';
+	const fieldError = 'border-red-400 dark:border-red-300 dark:text-gray-200';
 	var age: Date;
 	let aaa: string;
 	function fieldStyle(error: boolean) {
 		return twMerge(
-			'border-1 w-32 h-12 rounded-[8px] mx-2 text-xl font-bold',
+			'border-1 w-32 h-12 rounded-[8px] mx-2 text-xl font-bold transition-colors duration-1000',
 			error ? fieldError : fieldCorrect
 		);
 	}
@@ -103,65 +103,65 @@
 <div class="m-auto h-full w-1/2 rounded-[20px] rounded-br-[200px]">
 	<form class="m-12 grid grid-cols-3 grid-rows-3" method="post" onsubmit={send} autocomplete="off">
 		<div>
-			<p class="m-2 font-[poppins] font-bold text-gray-500">NAME</p>
+			<p class="m-2 font-[poppins] font-bold text-gray-500 dark:text-gray-300 transition-colors duration-1000">NAME</p>
 			<input
 				type="text"
 				id="name"
-				class="border-1 mx-2 h-12 w-32 rounded-[8px] text-xl font-bold"
+				class="border-1 mx-2 h-12 w-32 rounded-[8px] text-xl font-bold dark:text-gray-200 transition-colors duration-1000"
 			/>
 		</div>
 		<div>
-			<p class="m-2 font-[poppins] font-bold text-gray-500">EMAIL</p>
+			<p class="m-2 font-[poppins] font-bold text-gray-500 dark:text-gray-300 transition-colors duration-1000">EMAIL</p>
 			<input
 				type="email"
 				id="email"
-				class="border-1 mx-2 h-12 w-32 rounded-[8px] text-xl font-bold"
+				class="border-1 mx-2 h-12 w-32 rounded-[8px] text-xl font-bold dark:text-gray-200 transition-colors duration-1000"
 			/>
 		</div>
 		<div>
-			<p class="m-2 font-[poppins] font-bold text-gray-500">CITY</p>
+			<p class="m-2 font-[poppins] font-bold text-gray-500 dark:text-gray-300 transition-colors duration-1000">CITY</p>
 			<input
 				type="text"
 				id="city"
-				class="border-1 mx-2 h-12 w-32 rounded-[8px] text-xl font-bold"
+				class="border-1 mx-2 h-12 w-32 rounded-[8px] text-xl font-bold dark:text-gray-200 transition-colors duration-1000"
 			/>
 		</div>
 		<div>
-			<p class="m-2 font-[poppins] font-bold text-gray-500">DAY</p>
+			<p class="m-2 font-[poppins] font-bold text-gray-500 dark:text-gray-300 transition-colors duration-1000">DAY</p>
 			<input type="text" id="day" class={fieldStyle(dayError)} placeholder="DD" />
 		</div>
 		<div>
-			<p class="m-2 font-[poppins] font-bold text-gray-500">MONTH</p>
+			<p class="m-2 font-[poppins] font-bold text-gray-500 dark:text-gray-300 transition-colors duration-1000">MONTH</p>
 			<input type="text" id="month" class={fieldStyle(monthError)} placeholder="MM" />
 		</div>
 		<div>
-			<p class="m-2 font-[poppins] font-bold text-gray-500">YEAR</p>
+			<p class="m-2 font-[poppins] font-bold text-gray-500 dark:text-gray-300 transition-colors duration-1000">YEAR</p>
 			<input type="text" id="year" class={fieldStyle(yearError)} placeholder="YYYY" />
 		</div>
 		<div class="col-span-3 flex flex-row items-center">
 			<hr class="w-3/4" />
 			<button
 				type="submit"
-				class="justify-content flex h-24 w-24 rounded-[50px] bg-purple-500 hover:bg-black"
+				class="justify-content flex h-24 w-24 rounded-[50px] bg-purple-500 hover:bg-black dark:bg-purple-600 dark:hover:bg-gray-400 transition-colors duration-1000"
 			>
 				<img src="http://localhost:5173/icon-arrow.svg" alt="arrow" class="m-auto h-14 w-14" />
 			</button>
 		</div>
 	</form>
 	<div class="flex flex-row">
-		<p class="text-8xl font-extrabold text-purple-500">{countedYears}</p>
-		<p class="text-8xl">years</p>
+		<p class="text-8xl font-extrabold text-purple-500 dark:text-purple-600 transition-colors duration-1000">{countedYears}</p>
+		<p class="text-8xl dark:text-gray-200 transition-colors duration-1000">years</p>
 	</div>
 	<div class="flex flex-row">
-		<p class="text-8xl font-extrabold text-purple-500">{countedMonths}</p>
-		<p class="text-8xl">months</p>
+		<p class="text-8xl font-extrabold text-purple-500 dark:text-purple-600 transition-colors duration-1000">{countedMonths}</p>
+		<p class="text-8xl dark:text-gray-200 transition-colors duration-1000">months</p>
 	</div>
 	<div class="flex flex-row">
-		<p class="text-8xl font-extrabold text-purple-500">{countedDays}</p>
-		<p class="text-8xl">days</p>
+		<p class="text-8xl font-extrabold text-purple-500 dark:text-purple-600 transition-colors duration-1000">{countedDays}</p>
+		<p class="text-8xl dark:text-gray-200 transition-colors duration-1000">days</p>
 	</div>
 </div>
-<div class="attribution">
+<div class="attribution dark:text-white transition-colors duration-1000">
 	Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank"
 		>Frontend Mentor</a
 	>. Coded by MichalJ245.
