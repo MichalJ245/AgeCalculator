@@ -17,7 +17,7 @@
 	let aaa: string;
 	function fieldStyle(error: boolean) {
 		return twMerge(
-			'border-1 w-32 h-12 rounded-[8px] mx-2 text-xl font-bold transition-colors duration-1000',
+			'border-1 w-32 h-12 rounded-[8px] mx-2 text-xl font-bold placeholder:text-gray-500 dark:placeholder:text-gray-200 transition-colors duration-1000',
 			error ? fieldError : fieldCorrect
 		);
 	}
@@ -115,7 +115,7 @@
 			<input
 				type="email"
 				id="email"
-				class="border-1 mx-2 h-12 w-32 rounded-[8px] text-xl font-bold dark:text-gray-200 transition-colors duration-1000"
+				class="border-1 mx-2 h-12 w-32 rounded-[8px] text-xl font-bold text-gray-700 dark:text-gray-200 transition-colors duration-1000"
 			/>
 		</div>
 		<div>
@@ -123,7 +123,7 @@
 			<input
 				type="text"
 				id="city"
-				class="border-1 mx-2 h-12 w-32 rounded-[8px] text-xl font-bold dark:text-gray-200 transition-colors duration-1000"
+				class="border-1 mx-2 h-12 w-32 rounded-[8px] text-xl font-bold text-gray-700 dark:text-gray-200 transition-colors duration-1000"
 			/>
 		</div>
 		<div>
