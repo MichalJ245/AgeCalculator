@@ -35,9 +35,10 @@
 	}
 	let currentRow: number = $state(0);
 	const getData = async () => {
-		const response = await fetch('http://192.168.0.216:8000/users/api/submissions/');
+		const response = await fetch('http://192.168.0.216:8000/users/api/submissions/?sort_by=name&page=1&per_page=2');
 		const json = await response.json();
 		listOfItems = json;
+		console.log(json);
 	};
 
 	onMount(() => {

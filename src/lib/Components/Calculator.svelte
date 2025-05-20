@@ -17,7 +17,7 @@
 	let aaa: string;
 	function fieldStyle(error: boolean) {
 		return twMerge(
-			'border-1 w-32 h-12 rounded-[8px] mx-2 text-xl font-bold placeholder:text-gray-500 dark:placeholder:text-gray-200 transition-colors duration-1000',
+			'border-1 w-32 h-12 rounded-[8px] mx-2 text-xl font-bold placeholder:text-gray-500 dark:placeholder:text-gray-200 transition-colors duration-1000 w-[100%]',
 			error ? fieldError : fieldCorrect
 		);
 	}
@@ -101,67 +101,103 @@
 </script>
 
 <div class="m-auto h-full w-1/2 rounded-[20px] rounded-br-[200px]">
-	<form class="m-12 grid grid-cols-3 grid-rows-3" method="post" onsubmit={send} autocomplete="off">
-		<div>
-			<p class="m-2 font-[poppins] font-bold text-gray-500 dark:text-gray-300 transition-colors duration-1000">NAME</p>
+	<form class="m-12 grid grid-cols-3 gap-x-2" method="post" onsubmit={send} autocomplete="off">
+		<div class="">
+			<p
+				class="m-2 font-[poppins] font-bold text-gray-500 transition-colors duration-1000 dark:text-gray-300"
+			>
+				NAME
+			</p>
 			<input
 				type="text"
 				id="name"
-				class="border-1 mx-2 h-12 w-32 rounded-[8px] text-xl font-bold dark:text-gray-200 transition-colors duration-1000"
+				class="mx-2 h-12 w-32 w-[100%] rounded-[8px] border-1 text-xl font-bold transition-colors duration-1000 dark:text-gray-200"
 			/>
 		</div>
-		<div>
-			<p class="m-2 font-[poppins] font-bold text-gray-500 dark:text-gray-300 transition-colors duration-1000">EMAIL</p>
+		<div class="">
+			<p
+				class="m-2 font-[poppins] font-bold text-gray-500 transition-colors duration-1000 dark:text-gray-300"
+			>
+				EMAIL
+			</p>
 			<input
 				type="email"
 				id="email"
-				class="border-1 mx-2 h-12 w-32 rounded-[8px] text-xl font-bold text-gray-700 dark:text-gray-200 transition-colors duration-1000"
+				class="mx-2 h-12 w-32 w-[100%] rounded-[8px] border-1 text-xl font-bold text-gray-700 transition-colors duration-1000 dark:text-gray-200"
 			/>
 		</div>
-		<div>
-			<p class="m-2 font-[poppins] font-bold text-gray-500 dark:text-gray-300 transition-colors duration-1000">CITY</p>
+		<div class="">
+			<p
+				class="m-2 font-[poppins] font-bold text-gray-500 transition-colors duration-1000 dark:text-gray-300"
+			>
+				CITY
+			</p>
 			<input
 				type="text"
 				id="city"
-				class="border-1 mx-2 h-12 w-32 rounded-[8px] text-xl font-bold text-gray-700 dark:text-gray-200 transition-colors duration-1000"
+				class="mx-2 h-12 w-32 w-[100%] rounded-[8px] border-1 text-xl font-bold text-gray-700 transition-colors duration-1000 dark:text-gray-200"
 			/>
 		</div>
-		<div>
-			<p class="m-2 font-[poppins] font-bold text-gray-500 dark:text-gray-300 transition-colors duration-1000">DAY</p>
+		<div class="">
+			<p
+				class="m-2 font-[poppins] font-bold text-gray-500 transition-colors duration-1000 dark:text-gray-300"
+			>
+				DAY
+			</p>
 			<input type="text" id="day" class={fieldStyle(dayError)} placeholder="DD" />
 		</div>
-		<div>
-			<p class="m-2 font-[poppins] font-bold text-gray-500 dark:text-gray-300 transition-colors duration-1000">MONTH</p>
+		<div class="">
+			<p
+				class="m-2 font-[poppins] font-bold text-gray-500 transition-colors duration-1000 dark:text-gray-300"
+			>
+				MONTH
+			</p>
 			<input type="text" id="month" class={fieldStyle(monthError)} placeholder="MM" />
 		</div>
-		<div>
-			<p class="m-2 font-[poppins] font-bold text-gray-500 dark:text-gray-300 transition-colors duration-1000">YEAR</p>
+		<div class="">
+			<p
+				class="m-2 font-[poppins] font-bold text-gray-500 transition-colors duration-1000 dark:text-gray-300"
+			>
+				YEAR
+			</p>
 			<input type="text" id="year" class={fieldStyle(yearError)} placeholder="YYYY" />
 		</div>
-		<div class="col-span-3 flex flex-row items-center">
-			<hr class="w-3/4" />
+		<div class="relative col-span-3 w-full h-24">
+			<hr class="absolute inset-x-0 top-1/2 w-full -translate-y-1/2" />
 			<button
 				type="submit"
-				class="justify-content flex h-24 w-24 rounded-[50px] bg-purple-500 hover:bg-black dark:bg-purple-600 dark:hover:bg-gray-400 transition-colors duration-1000"
+				class="justify-content absolute z-10 flex h-24 w-24 rounded-full bg-purple-500 transition-colors duration-1000 hover:bg-black left-1/2 -translate-x-1/2 transform md:right-0 md:translate-x-0 md:left-auto dark:bg-purple-600 dark:hover:bg-gray-400"
 			>
 				<img src="http://localhost:5173/icon-arrow.svg" alt="arrow" class="m-auto h-14 w-14" />
 			</button>
 		</div>
 	</form>
-	<div class="flex flex-row">
-		<p class="text-8xl font-extrabold text-purple-500 dark:text-purple-600 transition-colors duration-1000">{countedYears}</p>
-		<p class="text-8xl dark:text-gray-200 transition-colors duration-1000">years</p>
+	<div class="flex flex-row whitespace-nowrap">
+		<p
+			class="text-8xl font-extrabold text-purple-500 transition-colors duration-1000 dark:text-purple-600"
+		>
+			{countedYears}
+		</p>
+		<p class="text-8xl transition-colors duration-1000 dark:text-gray-200">years</p>
 	</div>
-	<div class="flex flex-row">
-		<p class="text-8xl font-extrabold text-purple-500 dark:text-purple-600 transition-colors duration-1000">{countedMonths}</p>
-		<p class="text-8xl dark:text-gray-200 transition-colors duration-1000">months</p>
+	<div class="flex flex-row whitespace-nowrap">
+		<p
+			class="text-8xl font-extrabold text-purple-500 transition-colors duration-1000 dark:text-purple-600"
+		>
+			{countedMonths}
+		</p>
+		<p class="text-8xl transition-colors duration-1000 dark:text-gray-200">months</p>
 	</div>
-	<div class="flex flex-row">
-		<p class="text-8xl font-extrabold text-purple-500 dark:text-purple-600 transition-colors duration-1000">{countedDays}</p>
-		<p class="text-8xl dark:text-gray-200 transition-colors duration-1000">days</p>
+	<div class="flex flex-row whitepsace-nowrap">
+		<p
+			class="text-8xl font-extrabold text-purple-500 transition-colors duration-1000 dark:text-purple-600"
+		>
+			{countedDays}
+		</p>
+		<p class="text-8xl transition-colors duration-1000 dark:text-gray-200">days</p>
 	</div>
 </div>
-<div class="attribution dark:text-white transition-colors duration-1000">
+<div class="attribution transition-colors duration-1000 dark:text-white">
 	Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank"
 		>Frontend Mentor</a
 	>. Coded by MichalJ245.
