@@ -14,9 +14,10 @@
 	let page: number = $state(1);
 	let size: number = $state(1);
 	let dataCount: number;
+	let order: 'id'|'name'|'email'|'birthdate'|'city' = $state('name');
 	const tableStyle = 'border-1 dark:border-white dark:text-white transition-colors duration-1000 border-collapse text-center';
 	const getData = async () => {
-		const response = await fetch('http://192.168.0.216:8000/users/api/submissions/?ordering=id&page='+page+'&page_size='+size);
+		const response = await fetch('http://192.168.0.216:8000/users/api/submissions/?ordering='+order+'&page='+page+'&page_size='+size);
 		jsonFile = await response.json();
 		console.log(jsonFile.results);
 		listOfItems = jsonFile.results;
@@ -25,6 +26,7 @@
 		dataCount = jsonFile.count;
 		checkPrev();
 		checkNext();
+		console.log(jsonFile)
 	};
 	onMount(() => {
 		getData();
@@ -84,6 +86,12 @@
 		getData();
 	}
 	}
+	function orderBy(field: 'id'|'name'|'email'|'birthdate'|'city')
+	{
+		order = field;
+		getData();
+		console.log(order);
+	}
 </script>
 
 <h1 class="text-center text-3xl font-bold transition-colors duration-1000 dark:text-white transition-colors duration-1000">
@@ -94,11 +102,11 @@
 		<table class={tableStyle}>
 			<thead class={tableStyle}>
 				<tr class={tableStyle}>
-					<th>ID</th>
-					<th>Name</th>
-					<th>Email</th>
-					<th>Birthdate</th>
-					<th>City</th>
+					<th onclick={() => {orderBy('id')}}>ID</th>
+					<th onclick={() => {orderBy('name')}}>Name</th>
+					<th onclick={() => {orderBy('email')}}>Email</th>
+					<th onclick={() => {orderBy('birthdate')}}>Birthdate</th>
+					<th onclick={ () => {orderBy('city')}}>City</th>
 				</tr>
 			</thead>
 			<tbody class={tableStyle}>
