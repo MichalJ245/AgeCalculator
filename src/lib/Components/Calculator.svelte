@@ -168,7 +168,7 @@
 				type="submit"
 				class="justify-content absolute z-10 flex h-24 w-24 rounded-full bg-purple-500 transition-colors duration-1000 hover:bg-black left-1/2 -translate-x-1/2 transform md:right-0 md:translate-x-0 md:left-auto dark:bg-purple-600 dark:hover:bg-gray-400"
 			>
-				<img src="http://localhost:5173/icon-arrow.svg" alt="arrow" class="m-auto h-14 w-14" />
+				<img src="icon-arrow.svg" alt="arrow" class="m-auto h-14 w-14" />
 			</button>
 		</div>
 	</form>
