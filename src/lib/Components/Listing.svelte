@@ -95,6 +95,7 @@
 	{
 		let handler = document.getElementById('size') as HTMLSelectElement;
 		size = parseInt(handler.value);
+		page = 1;
 		getData();
 	}
 </script>
@@ -128,18 +129,13 @@
 		</table>
 		<div class="flex justify-center">
 		<button class={buttonArrow(nextLeft)} onclick={() => {if(nextLeft){prevPage();}}}>&lt;</button>
-		{#if buttonArray.length <= 5}
-		{#each buttonArray as button}
-		<button class={buttonArrow(button == page)} onclick={() => {page = button;getData()}}>{button}</button>
-		{/each}
-		{:else}
+
 		{#if buttonArray[page-2] >= 1}
 		<button class={buttonArrow(buttonArray[page-2] == page)} onclick={() => {page = buttonArray[page-2];getData()}}>{buttonArray[page-2]}</button>
 		{/if}
 		<button class={buttonArrow(buttonArray[page-1] == page)} onclick={() => {page = buttonArray[page-1];getData()}}>{buttonArray[page-1]}</button>
 		{#if page < buttonArray.length}
 		<button class={buttonArrow(buttonArray[page] == page)} onclick={() => {page = buttonArray[page];getData()}}>{buttonArray[page]}</button>
-		{/if}
 		{/if}
 		<button class={buttonArrow(nextRight)} onclick={() => {if(nextRight){nextPage();}}}>&gt;</button>
 		</div>
