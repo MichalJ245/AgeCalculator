@@ -232,6 +232,7 @@
 					class={buttonArrow(buttonArray[page - 2] == page)}
 					onclick={() => {
 						page = buttonArray[page - 2];
+						getData();
 					}}>{buttonArray[page - 2]}</button
 				>
 			{/if}
@@ -239,6 +240,7 @@
 				class={buttonArrow(buttonArray[page - 1] == page)}
 				onclick={() => {
 					page = buttonArray[page - 1];
+					getData();
 				}}>{buttonArray[page - 1]}</button
 			>
 			{#if page < buttonArray.length}
@@ -246,6 +248,7 @@
 					class={buttonArrow(buttonArray[page] == page)}
 					onclick={() => {
 						page = buttonArray[page];
+						getData();
 					}}>{buttonArray[page]}</button
 				>
 			{/if}
