@@ -16,6 +16,8 @@
 	let size: number = $state(1);
 	let dataCount: number = $state(1);
 	let buttonArray: Array<number> = $state([]);
+	let loading = $state(true);
+	let index = 0;
 	let order:
 		| 'id'
 		| 'name'
@@ -34,6 +36,9 @@
 	const rowHoverStyle = 'hover:bg-gray-100 transition-colors duration-1000 dark:hover:bg-gray-700';
 	const getData = async () => {
 		try{
+			console.log('aaa');
+		loading = true;
+		loadAnimate();
 		const response = await fetch(
 			`http://192.168.0.216:8000/users/api/submissions/?ordering=${order}&page=${page}&page_size=${size}`)
 		jsonFile = await response.json();
@@ -41,14 +46,12 @@
 		next = jsonFile.next;
 		previous = jsonFile.previous;
 		dataCount = jsonFile.count;
-		//params.set('ordering',order);
-		//params.set('page',String(page));
-		//params.set('page_size',String(size));
-		//goto(`?${params.toString()}`,{replaceState: true});
 		checkPrev();
 		checkNext();
 		buttonNumber();
 		updateURL();
+		loading = false;
+		index = 0;
 		}
 		catch(e)
 		{
@@ -134,6 +137,38 @@
 		page = 1;
 		getData();
 	}
+	function loadAnimate()
+	{
+		if(loading && document.getElementById('load'))
+	{
+		let handler = document.getElementById('load') as HTMLDivElement;
+		switch(index)
+		{
+			case 0:
+				handler.innerHTML = 'loading.';
+				break;
+			case 1:
+				handler.innerHTML = 'loading..';
+				break;
+			case 2:
+				handler.innerHTML = 'loading...';
+				break;
+		}
+		if(index <= 2)
+	{
+		index++;
+	}
+	else
+	{
+		index = 0;
+	}
+	setTimeout(() => requestAnimationFrame(loadAnimate),1000);
+	}
+	else if(loading)
+	{
+		setTimeout(() => requestAnimationFrame(loadAnimate),1000);requestAnimationFrame(loadAnimate)
+	}
+	}
 </script>
 
 <h1
@@ -142,6 +177,9 @@
 	Data from table
 </h1>
 <div class="flex flex-col justify-center">
+	{#if loading}
+	<p class="text-center text-3xl" id="load">loading</p>
+	{:else}
 	{#if listOfItems}
 		<table>
 			<thead>
@@ -252,5 +290,6 @@
 		</select>
 	{:else}
 		<p class="dark: text-center text-white">No data, or connection failed</p>
+	{/if}
 	{/if}
 </div>
