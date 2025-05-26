@@ -44,10 +44,10 @@
 			jsonFile = await response.json();
 			listOfItems = jsonFile.results;
 			next = jsonFile.next;
+			next ? nextRight = true : nextRight = false;
 			previous = jsonFile.previous;
+			previous ? nextLeft = true : nextLeft = false;
 			dataCount = jsonFile.count;
-			checkPrev();
-			checkNext();
 			buttonNumber();
 			loading = false;
 			index = 0;
@@ -72,29 +72,18 @@
 	});
 	let nextRight: boolean = $state(true);
 	let nextLeft: boolean = $state(false);
-	function checkPrev() {
-		if (previous) {
-			nextLeft = true;
-		} else {
-			nextLeft = false;
-		}
-	}
-	function checkNext() {
-		if (next) {
-			nextRight = true;
-		} else {
-			nextRight = false;
-		}
-	}
-	function nextPage() {
+	function arrowButtons(arg: 'next'|'prev')
+	{
+		if(arg === 'next' && next)
+	{
 		page++;
 		getData();
-		checkNext();
 	}
-	function prevPage() {
+	else if(arg === 'prev' && previous)
+	{
 		page--;
 		getData();
-		checkPrev();
+	}
 	}
 	function buttonArrow(side: boolean) {
 		let buttonActive = 'bg-purple-500 text-white dark:bg-purple-600';
@@ -222,7 +211,7 @@
 				class={buttonArrow(nextLeft)}
 				onclick={() => {
 					if (nextLeft) {
-						prevPage();
+						arrowButtons('prev');
 					}
 				}}>&lt;</button
 			>
@@ -256,7 +245,7 @@
 				class={buttonArrow(nextRight)}
 				onclick={() => {
 					if (nextRight) {
-						nextPage();
+						arrowButtons('next');
 					}
 				}}>&gt;</button
 			>
