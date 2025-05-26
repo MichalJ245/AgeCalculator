@@ -55,8 +55,24 @@
 			console.log(e);
 		}
 	};
+	function validateParams()
+	{
+		if(order != 'id' || 'name' || 'email' || 'birthdate' || 'city' || '-id' || '-name' || '-email' || '-birthdate' || '-city')
+		{
+			order = 'id';
+		}
+		if(page > dataCount / size)
+		{
+			page = 1;
+		}
+		if(size > dataCount)
+		{
+			size = 1;
+		}
+	}
 	function updateURL() {
 		let param = `ordering=${order}&page=${page}&page_size=${size}`;
+		validateParams();
 		goto(`?${param}`);
 	}
 	$effect(() => {
