@@ -35,42 +35,40 @@
 	const tableHeaderStyle = 'bg-gray-200 text-xl';
 	const rowHoverStyle = 'hover:bg-gray-100 transition-colors duration-1000 dark:hover:bg-gray-700';
 	const getData = async () => {
-		try{
-			console.log('aaa');
-		loading = true;
-		loadAnimate();
-		const response = await fetch(
-			`http://192.168.0.216:8000/users/api/submissions/?ordering=${order}&page=${page}&page_size=${size}`)
-		jsonFile = await response.json();
-		listOfItems = jsonFile.results;
-		next = jsonFile.next;
-		previous = jsonFile.previous;
-		dataCount = jsonFile.count;
-		checkPrev();
-		checkNext();
-		buttonNumber();
-		updateURL();
-		loading = false;
-		index = 0;
-		}
-		catch(e)
-		{
+		try {
+			loading = true;
+			loadAnimate();
+			const response = await fetch(
+				`http://192.168.0.216:8000/users/api/submissions/?ordering=${order}&page=${page}&page_size=${size}`
+			);
+			jsonFile = await response.json();
+			listOfItems = jsonFile.results;
+			next = jsonFile.next;
+			previous = jsonFile.previous;
+			dataCount = jsonFile.count;
+			checkPrev();
+			checkNext();
+			buttonNumber();
+			loading = false;
+			index = 0;
+		} catch (e) {
 			console.log(e);
 		}
 	};
-	function updateURL()
-	{
+	function updateURL() {
 		let param = `ordering=${order}&page=${page}&page_size=${size}`;
 		goto(`?${param}`);
 	}
+	$effect(() => {
+		updateURL();
+	});
 	onMount(() => {
 		updateURL();
-	const params = new URLSearchParams(window.location.search);
-	
-		order = String(params.get('ordering') || 'id');
-		page = parseInt((params.get('page')) || '1');
-		size = parseInt((params.get('page_size')) || '1');
+		const params = new URLSearchParams(window.location.search);
 		getData();
+		order = String(params.get('ordering') || 'id');
+		page = parseInt(params.get('page') || '1');
+		size = parseInt(params.get('page_size') || '1');
 	});
 	let nextRight: boolean = $state(true);
 	let nextLeft: boolean = $state(false);
@@ -90,13 +88,13 @@
 	}
 	function nextPage() {
 		page++;
-		checkNext();
 		getData();
+		checkNext();
 	}
 	function prevPage() {
 		page--;
-		checkPrev();
 		getData();
+		checkPrev();
 	}
 	function buttonArrow(side: boolean) {
 		let buttonActive = 'bg-purple-500 text-white dark:bg-purple-600';
@@ -120,8 +118,8 @@
 			| '-city'
 	) {
 		order = field;
-		getData();
 		console.log(order);
+		getData();
 	}
 	function buttonNumber() {
 		buttonArray = [];
@@ -137,37 +135,29 @@
 		page = 1;
 		getData();
 	}
-	function loadAnimate()
-	{
-		if(loading && document.getElementById('load'))
-	{
-		let handler = document.getElementById('load') as HTMLDivElement;
-		switch(index)
-		{
-			case 0:
-				handler.innerHTML = 'loading.';
-				break;
-			case 1:
-				handler.innerHTML = 'loading..';
-				break;
-			case 2:
-				handler.innerHTML = 'loading...';
-				break;
+	function loadAnimate() {
+		if (loading && document.getElementById('load')) {
+			let handler = document.getElementById('load') as HTMLDivElement;
+			switch (index) {
+				case 0:
+					handler.innerHTML = 'loading.';
+					break;
+				case 1:
+					handler.innerHTML = 'loading..';
+					break;
+				case 2:
+					handler.innerHTML = 'loading...';
+					break;
+			}
+			if (index <= 2) {
+				index++;
+			} else {
+				index = 0;
+			}
+			setTimeout(() => requestAnimationFrame(loadAnimate), 1000);
+		} else if (loading) {
+			setTimeout(() => requestAnimationFrame(loadAnimate), 1000);
 		}
-		if(index <= 2)
-	{
-		index++;
-	}
-	else
-	{
-		index = 0;
-	}
-	setTimeout(() => requestAnimationFrame(loadAnimate),1000);
-	}
-	else if(loading)
-	{
-		setTimeout(() => requestAnimationFrame(loadAnimate),1000);requestAnimationFrame(loadAnimate)
-	}
 	}
 </script>
 
@@ -178,9 +168,8 @@
 </h1>
 <div class="flex flex-col justify-center">
 	{#if loading}
-	<p class="text-center text-3xl" id="load">loading</p>
-	{:else}
-	{#if listOfItems}
+		<p class="text-center text-3xl dark:text-white" id="load">loading</p>
+	{:else if listOfItems}
 		<table>
 			<thead>
 				<tr>
@@ -243,7 +232,6 @@
 					class={buttonArrow(buttonArray[page - 2] == page)}
 					onclick={() => {
 						page = buttonArray[page - 2];
-						getData();
 					}}>{buttonArray[page - 2]}</button
 				>
 			{/if}
@@ -251,7 +239,6 @@
 				class={buttonArrow(buttonArray[page - 1] == page)}
 				onclick={() => {
 					page = buttonArray[page - 1];
-					getData();
 				}}>{buttonArray[page - 1]}</button
 			>
 			{#if page < buttonArray.length}
@@ -259,7 +246,6 @@
 					class={buttonArrow(buttonArray[page] == page)}
 					onclick={() => {
 						page = buttonArray[page];
-						getData();
 					}}>{buttonArray[page]}</button
 				>
 			{/if}
@@ -290,6 +276,5 @@
 		</select>
 	{:else}
 		<p class="dark: text-center text-white">No data, or connection failed</p>
-	{/if}
 	{/if}
 </div>
