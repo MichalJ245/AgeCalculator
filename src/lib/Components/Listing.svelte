@@ -103,7 +103,7 @@
 	}
 	}
 	function buttonArrow(side: boolean) {
-		let buttonActive = 'bg-gray-100 dark:text-white';
+		let buttonActive = 'bg-gray-100 dark:text-gray-600';
 		let buttonNotActive = 'text-gray-800 dark:bg-gray-700 dark:text-white';
 		return twMerge(
 			'inline-block w-12 p-2 rounded-[10px] my-2 text-xl',
