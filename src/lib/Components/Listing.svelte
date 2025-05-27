@@ -141,20 +141,24 @@
 				buttonArray.push(i);
 			}
 		} else {
-		if(page >= numOfButtons-3)
-		{
-			endPage = numOfButtons -1;
-		}
+		
 		console.log(endPage)
 		for(i = startPage;i <= endPage;i++)
 		{
 			buttonArray.push(i)
 		}
-		buttonArray.push(-1)
+		if(endPage < numOfButtons-1)
+		{
+			buttonArray.push(-1)
+		}
 		}
 		if(!buttonArray.includes(numOfButtons))
 		{
 			buttonArray.push(numOfButtons);
+		}
+		if(buttonArray.includes(numOfButtons+1))
+		{
+			buttonArray.pop()
 		}
 	}
 	function sizeChange() {
@@ -269,7 +273,7 @@
 			<div class="flex justify-center">
 				{#each buttonArray as btn}
 					{#if btn === -1}
-						<p>...</p>
+						<p class="text-gray-500 my-auto text-xl">...</p>
 					{:else}
 						<button
 							class={buttonArrow(btn === page)}
