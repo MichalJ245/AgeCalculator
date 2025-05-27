@@ -108,7 +108,15 @@
 		let buttonActive = 'bg-gray-100 dark:text-gray-600';
 		let buttonNotActive = 'text-gray-800 dark:bg-gray-700 dark:text-white';
 		return twMerge(
-			'inline-block w-12 p-2 rounded-[10px] my-2 text-xl',
+			'inline-block w-auto p-2 rounded-[10px] my-2 text-xl',
+			side ? buttonActive : buttonNotActive
+		);
+	}
+	function buttonNumberStyle(side: boolean) {
+		let buttonActive = 'bg-gray-100 dark:text-gray-600';
+		let buttonNotActive = 'text-gray-800 dark:bg-gray-700 dark:text-white';
+		return twMerge(
+			'inline-block w-12 p-2 rounded-[20px] my-2 text-xl bg-blue-200',
 			side ? buttonActive : buttonNotActive
 		);
 	}
@@ -142,7 +150,6 @@
 			}
 		} else {
 		
-		console.log(endPage)
 		for(i = startPage;i <= endPage;i++)
 		{
 			buttonArray.push(i)
@@ -182,15 +189,16 @@
 					handler.innerHTML = 'loading...';
 					break;
 			}
-			if (index <= 2) {
+			if (index <= 1) {
 				index++;
 			} else {
 				index = 0;
 			}
-			setTimeout(() => requestAnimationFrame(loadAnimate), 1000);
+			setTimeout(() => requestAnimationFrame(loadAnimate), 500);
 		} else if (loading) {
-			setTimeout(() => requestAnimationFrame(loadAnimate), 1000);
+			setTimeout(() => requestAnimationFrame(loadAnimate), 500);
 		}
+		console.log(index)
 	}
 </script>
 
@@ -268,7 +276,7 @@
 					if (nextLeft) {
 						arrowButtons('prev');
 					}
-				}}>&lt;</button
+				}}>&lt; previous</button
 			>
 			<div class="flex justify-center">
 				{#each buttonArray as btn}
@@ -276,7 +284,7 @@
 						<p class="text-gray-500 my-auto text-xl">...</p>
 					{:else}
 						<button
-							class={buttonArrow(btn === page)}
+							class={buttonNumberStyle(btn === page)}
 							onclick={() => {
 								page = btn;
 								updateURL();
@@ -295,7 +303,7 @@
 					if (nextRight) {
 						arrowButtons('next');
 					}
-				}}>&gt;</button
+				}}>next &gt;</button
 			>
 		</div>
 	{:else}
