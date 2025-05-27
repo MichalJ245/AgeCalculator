@@ -78,11 +78,11 @@
 		goto(`?${param}`);
 	}
 	onMount(() => {
-		updateURL();
 		const params = new URLSearchParams(window.location.search);
 		order = String(params.get('ordering') || 'id');
 		page = parseInt(params.get('page') || '1');
 		size = parseInt(params.get('page_size') || '1');
+		updateURL();
 		getData();
 	});
 	let nextRight: boolean = $state(true);
@@ -106,7 +106,7 @@
 		let buttonActive = 'bg-gray-100 dark:text-white';
 		let buttonNotActive = 'text-gray-800 dark:bg-gray-700 dark:text-white';
 		return twMerge(
-			'inline-block w-12 p-2 rounded-[10px] m-2 text-xl',
+			'inline-block w-12 p-2 rounded-[10px] my-2 text-xl',
 			side ? buttonActive : buttonNotActive
 		);
 	}
@@ -238,7 +238,7 @@
 		</table>
 		<div class="flex justify-between">
 			<button
-				class={buttonArrow(nextLeft)}
+				class={buttonArrow(true)}
 				onclick={() => {
 					if (nextLeft) {
 						arrowButtons('prev');
@@ -276,7 +276,7 @@
 			{/if}
 			</div>
 			<button
-				class={buttonArrow(nextRight)}
+				class={buttonArrow(true)}
 				onclick={() => {
 					if (nextRight) {
 						arrowButtons('next');
