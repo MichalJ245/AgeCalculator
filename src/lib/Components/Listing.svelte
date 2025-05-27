@@ -34,10 +34,28 @@
 		'border-b-[1px] border-gray-300 p-2 dark:border-white dark:text-white transition-colors duration-1000 border-collapse text-center ';
 	const tableHeaderStyle = 'bg-gray-200 text-xl';
 	const rowHoverStyle = 'hover:bg-gray-100 transition-colors duration-1000 dark:hover:bg-gray-700';
+	const orderValues = ['id','name','email','birthdate','city','-id','-name','-email','-birthdate','-city'];
 	const getData = async () => {
 		try {
 			loading = true;
 			loadAnimate();
+			const r1 = await fetch(
+				`http://192.168.0.216:8000/users/api/submissions/?`
+			);
+			jsonFile = await r1.json();
+			dataCount = jsonFile.count;
+			if(size > dataCount || Number.isNaN(size) || size < 1)
+		{
+			size = dataCount;
+		}
+		if(page > Math.ceil(dataCount/size) || Number.isNaN(page) || page < 1)
+		{
+			page = 1;
+		}
+		if(!orderValues.includes(order))
+		{
+			order = 'id';
+		}
 			const response = await fetch(
 				`http://192.168.0.216:8000/users/api/submissions/?ordering=${order}&page=${page}&page_size=${size}`
 			);
@@ -55,36 +73,17 @@
 			console.log(e);
 		}
 	};
-	function validateParams()
-	{
-		if(order != 'id' || 'name' || 'email' || 'birthdate' || 'city' || '-id' || '-name' || '-email' || '-birthdate' || '-city')
-		{
-			order = 'id';
-		}
-		if(page > dataCount / size)
-		{
-			page = 1;
-		}
-		if(size > dataCount)
-		{
-			size = 1;
-		}
-	}
 	function updateURL() {
 		let param = `ordering=${order}&page=${page}&page_size=${size}`;
-		validateParams();
 		goto(`?${param}`);
 	}
-	$effect(() => {
-		updateURL();
-	});
 	onMount(() => {
 		updateURL();
 		const params = new URLSearchParams(window.location.search);
-		getData();
 		order = String(params.get('ordering') || 'id');
 		page = parseInt(params.get('page') || '1');
 		size = parseInt(params.get('page_size') || '1');
+		getData();
 	});
 	let nextRight: boolean = $state(true);
 	let nextLeft: boolean = $state(false);
@@ -93,19 +92,21 @@
 		if(arg === 'next' && next)
 	{
 		page++;
+		updateURL();
 		getData();
 	}
 	else if(arg === 'prev' && previous)
 	{
 		page--;
+		updateURL();
 		getData();
 	}
 	}
 	function buttonArrow(side: boolean) {
-		let buttonActive = 'bg-purple-500 text-white dark:bg-purple-600';
-		let buttonNotActive = 'bg-gray-200 text-gray-800 dark:bg-gray-500 dark:text-white';
+		let buttonActive = 'bg-gray-100 dark:text-white';
+		let buttonNotActive = 'text-gray-800 dark:bg-gray-700 dark:text-white';
 		return twMerge(
-			'inline-block w-16 p-4 rounded-[10px] m-2 text-3xl',
+			'inline-block w-12 p-2 rounded-[10px] m-2 text-xl',
 			side ? buttonActive : buttonNotActive
 		);
 	}
@@ -123,7 +124,7 @@
 			| '-city'
 	) {
 		order = field;
-		console.log(order);
+		updateURL();
 		getData();
 	}
 	function buttonNumber() {
@@ -138,6 +139,7 @@
 		let handler = document.getElementById('size') as HTMLSelectElement;
 		size = parseInt(handler.value);
 		page = 1;
+		updateURL();
 		getData();
 	}
 	function loadAnimate() {
@@ -165,12 +167,24 @@
 		}
 	}
 </script>
+<select
+			id="size"
+			onchange={sizeChange}
+			class="m-auto w-64 rounded-[5px] border-1 p-2 dark:bg-gray-800 dark:text-white"
+		>
+			<option value="1">Show 1 row</option>
+			{#if dataCount >= 2}<option value="2">Show 2 rows</option>{/if}
+			{#if dataCount >= 3}<option value="3">Show 3 rows</option>{/if}
+			{#if dataCount >= 4}<option value="4">Show 4 rows</option>{/if}
+			{#if dataCount >= 5}<option value="5">Show 5 rows</option>{/if}
+			{#if dataCount >= 10}<option value="10">Show 10 rows</option>{/if}
+			{#if dataCount >= 15}<option value="15">Show 15 rows</option>{/if}
+			{#if dataCount >= 20}<option value="20">Show 20 rows</option>{/if}
+			{#if dataCount >= 25}<option value="25">Show 25 rows</option>{/if}
+			<option value={dataCount}>Show all rows</option>
+		</select>
 
-<h1
-	class="text-center text-3xl font-bold transition-colors transition-colors duration-1000 duration-1000 dark:text-white"
->
-	Data from table
-</h1>
+
 <div class="flex flex-col justify-center">
 	{#if loading}
 		<p class="text-center text-3xl dark:text-white" id="load">loading</p>
@@ -222,7 +236,7 @@
 				{/each}
 			</tbody>
 		</table>
-		<div class="flex justify-center">
+		<div class="flex justify-between">
 			<button
 				class={buttonArrow(nextLeft)}
 				onclick={() => {
@@ -231,12 +245,13 @@
 					}
 				}}>&lt;</button
 			>
-
+			<div>
 			{#if buttonArray[page - 2] >= 1}
 				<button
 					class={buttonArrow(buttonArray[page - 2] == page)}
 					onclick={() => {
 						page = buttonArray[page - 2];
+						updateURL();
 						getData();
 					}}>{buttonArray[page - 2]}</button
 				>
@@ -245,7 +260,8 @@
 				class={buttonArrow(buttonArray[page - 1] == page)}
 				onclick={() => {
 					page = buttonArray[page - 1];
-					getData();
+					updateURL();
+					getData(); 
 				}}>{buttonArray[page - 1]}</button
 			>
 			{#if page < buttonArray.length}
@@ -253,10 +269,12 @@
 					class={buttonArrow(buttonArray[page] == page)}
 					onclick={() => {
 						page = buttonArray[page];
+						updateURL();
 						getData();
 					}}>{buttonArray[page]}</button
 				>
 			{/if}
+			</div>
 			<button
 				class={buttonArrow(nextRight)}
 				onclick={() => {
@@ -266,22 +284,6 @@
 				}}>&gt;</button
 			>
 		</div>
-		<select
-			id="size"
-			onchange={sizeChange}
-			class="m-auto w-64 rounded-[5px] border-1 p-2 dark:bg-gray-800 dark:text-white"
-		>
-			<option value="1">Show 1 row</option>
-			<option value="2">Show 2 rows</option>
-			<option value="3">Show 3 rows</option>
-			<option value="4">Show 4 rows</option>
-			<option value="5">Show 5 rows</option>
-			<option value="10">Show 10 rows</option>
-			<option value="15">Show 15 rows</option>
-			<option value="20">Show 20 rows</option>
-			<option value="25">Show 25 rows</option>
-			<option value={dataCount}>Show all rows</option>
-		</select>
 	{:else}
 		<p class="dark: text-center text-white">No data, or connection failed</p>
 	{/if}
