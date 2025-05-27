@@ -34,37 +34,43 @@
 		'border-b-[1px] border-gray-300 p-2 dark:border-white dark:text-white transition-colors duration-1000 border-collapse text-center ';
 	const tableHeaderStyle = 'bg-gray-200 text-xl';
 	const rowHoverStyle = 'hover:bg-gray-100 transition-colors duration-1000 dark:hover:bg-gray-700';
-	const orderValues = ['id','name','email','birthdate','city','-id','-name','-email','-birthdate','-city'];
+	const orderValues = [
+		'id',
+		'name',
+		'email',
+		'birthdate',
+		'city',
+		'-id',
+		'-name',
+		'-email',
+		'-birthdate',
+		'-city'
+	];
 	const getData = async () => {
 		try {
 			loading = true;
 			loadAnimate();
-			const r1 = await fetch(
-				`http://192.168.0.216:8000/users/api/submissions/?`
-			);
+			const r1 = await fetch(`http://192.168.0.216:8000/users/api/submissions/?`);
 			jsonFile = await r1.json();
 			dataCount = jsonFile.count;
-			if(size > dataCount || Number.isNaN(size) || size < 1)
-		{
-			size = dataCount;
-		}
-		if(page > Math.ceil(dataCount/size) || Number.isNaN(page) || page < 1)
-		{
-			page = 1;
-		}
-		if(!orderValues.includes(order))
-		{
-			order = 'id';
-		}
+			if (size > dataCount || Number.isNaN(size) || size < 1) {
+				size = dataCount;
+			}
+			if (page > Math.ceil(dataCount / size) || Number.isNaN(page) || page < 1) {
+				page = 1;
+			}
+			if (!orderValues.includes(order)) {
+				order = 'id';
+			}
 			const response = await fetch(
 				`http://192.168.0.216:8000/users/api/submissions/?ordering=${order}&page=${page}&page_size=${size}`
 			);
 			jsonFile = await response.json();
 			listOfItems = jsonFile.results;
 			next = jsonFile.next;
-			next ? nextRight = true : nextRight = false;
+			next ? (nextRight = true) : (nextRight = false);
 			previous = jsonFile.previous;
-			previous ? nextLeft = true : nextLeft = false;
+			previous ? (nextLeft = true) : (nextLeft = false);
 			dataCount = jsonFile.count;
 			buttonNumber();
 			loading = false;
@@ -87,20 +93,16 @@
 	});
 	let nextRight: boolean = $state(true);
 	let nextLeft: boolean = $state(false);
-	function arrowButtons(arg: 'next'|'prev')
-	{
-		if(arg === 'next' && next)
-	{
-		page++;
-		updateURL();
-		getData();
-	}
-	else if(arg === 'prev' && previous)
-	{
-		page--;
-		updateURL();
-		getData();
-	}
+	function arrowButtons(arg: 'next' | 'prev') {
+		if (arg === 'next' && next) {
+			page++;
+			updateURL();
+			getData();
+		} else if (arg === 'prev' && previous) {
+			page--;
+			updateURL();
+			getData();
+		}
 	}
 	function buttonArrow(side: boolean) {
 		let buttonActive = 'bg-gray-100 dark:text-gray-600';
@@ -110,6 +112,7 @@
 			side ? buttonActive : buttonNotActive
 		);
 	}
+
 	function orderBy(
 		field:
 			| 'id'
@@ -128,11 +131,30 @@
 		getData();
 	}
 	function buttonNumber() {
+		let startPage: number = Math.max(1,page-1);
+		let endPage: number = page+1;
 		buttonArray = [];
 		let numOfButtons = Math.ceil(dataCount / size);
 		let i = 1;
-		for (i = 1; i <= numOfButtons; i++) {
-			buttonArray.push(i);
+		if (numOfButtons <= 5) {
+			for (i = 1; i <= numOfButtons; i++) {
+				buttonArray.push(i);
+			}
+		} else {
+		if(page >= numOfButtons-3)
+		{
+			endPage = numOfButtons -1;
+		}
+		console.log(endPage)
+		for(i = startPage;i <= endPage;i++)
+		{
+			buttonArray.push(i)
+		}
+		buttonArray.push(-1)
+		}
+		if(!buttonArray.includes(numOfButtons))
+		{
+			buttonArray.push(numOfButtons);
 		}
 	}
 	function sizeChange() {
@@ -167,25 +189,24 @@
 		}
 	}
 </script>
-<select
-			id="size"
-			onchange={sizeChange}
-			class="m-auto w-64 rounded-[5px] border-1 p-2 dark:bg-gray-800 dark:text-white"
-		>
-			<option value="1">Show 1 row</option>
-			{#if dataCount >= 2}<option value="2">Show 2 rows</option>{/if}
-			{#if dataCount >= 3}<option value="3">Show 3 rows</option>{/if}
-			{#if dataCount >= 4}<option value="4">Show 4 rows</option>{/if}
-			{#if dataCount >= 5}<option value="5">Show 5 rows</option>{/if}
-			{#if dataCount >= 10}<option value="10">Show 10 rows</option>{/if}
-			{#if dataCount >= 15}<option value="15">Show 15 rows</option>{/if}
-			{#if dataCount >= 20}<option value="20">Show 20 rows</option>{/if}
-			{#if dataCount >= 25}<option value="25">Show 25 rows</option>{/if}
-			<option value={dataCount}>Show all rows</option>
-		</select>
 
-
-<div class="flex flex-col justify-center">
+<div class="m-4 flex flex-col justify-center rounded-[10px] py-4 outline-1 outline-gray-300">
+	<select
+		id="size"
+		onchange={sizeChange}
+		class="m-auto w-64 rounded-[5px] border-1 p-2 dark:bg-gray-800 dark:text-white"
+	>
+		<option value="1">Show 1 row</option>
+		{#if dataCount >= 2}<option value="2">Show 2 rows</option>{/if}
+		{#if dataCount >= 3}<option value="3">Show 3 rows</option>{/if}
+		{#if dataCount >= 4}<option value="4">Show 4 rows</option>{/if}
+		{#if dataCount >= 5}<option value="5">Show 5 rows</option>{/if}
+		{#if dataCount >= 10}<option value="10">Show 10 rows</option>{/if}
+		{#if dataCount >= 15}<option value="15">Show 15 rows</option>{/if}
+		{#if dataCount >= 20}<option value="20">Show 20 rows</option>{/if}
+		{#if dataCount >= 25}<option value="25">Show 25 rows</option>{/if}
+		<option value={dataCount}>Show all rows</option>
+	</select>
 	{#if loading}
 		<p class="text-center text-3xl dark:text-white" id="load">loading</p>
 	{:else if listOfItems}
@@ -245,35 +266,24 @@
 					}
 				}}>&lt;</button
 			>
-			<div>
-			{#if buttonArray[page - 2] >= 1}
-				<button
-					class={buttonArrow(buttonArray[page - 2] == page)}
-					onclick={() => {
-						page = buttonArray[page - 2];
-						updateURL();
-						getData();
-					}}>{buttonArray[page - 2]}</button
-				>
-			{/if}
-			<button
-				class={buttonArrow(buttonArray[page - 1] == page)}
-				onclick={() => {
-					page = buttonArray[page - 1];
-					updateURL();
-					getData(); 
-				}}>{buttonArray[page - 1]}</button
-			>
-			{#if page < buttonArray.length}
-				<button
-					class={buttonArrow(buttonArray[page] == page)}
-					onclick={() => {
-						page = buttonArray[page];
-						updateURL();
-						getData();
-					}}>{buttonArray[page]}</button
-				>
-			{/if}
+			<div class="flex justify-center">
+				{#each buttonArray as btn}
+					{#if btn === -1}
+						<p>...</p>
+					{:else}
+						<button
+							class={buttonArrow(btn === page)}
+							onclick={() => {
+								page = btn;
+								updateURL();
+								getData();
+							}}
+							aria-label="button"
+						>
+							{btn}
+						</button>
+					{/if}
+				{/each}
 			</div>
 			<button
 				class={buttonArrow(true)}
