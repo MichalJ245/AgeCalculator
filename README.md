@@ -1,4 +1,4 @@
-![tabelka4](https://github.com/user-attachments/assets/6af16bef-bc14-494d-b5f2-2de2044ff7f1)
-![tabelka3](https://github.com/user-attachments/assets/e2099606-6305-4f28-8bb6-7080f550afb4)
-![tabelka2](https://github.com/user-attachments/assets/27bd2805-8a28-4355-89bb-2c95136920f2)
-![tabelka1](https://github.com/user-attachments/assets/0a31f0e0-c575-455d-a124-0e7c70a793e8)
+![tabelka4](https://github.com/user-attachments/assets/e8d86786-113e-4a96-8dee-9dcb9d52051b)
+![tabelka3](https://github.com/user-attachments/assets/66c328fd-3d19-41b2-97b9-2a4120f4a239)
+![tabelka2](https://github.com/user-attachments/assets/6b0195c3-8110-43d9-a65d-3b90ed63f435)
+![tabelka1](https://github.com/user-attachments/assets/bde0e4e6-ab7c-4c54-a7de-d27e7bd92659)
