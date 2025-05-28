@@ -33,7 +33,8 @@
 	const tableStyle =
 		'border-b-[1px] border-gray-300 p-2 dark:border-white dark:text-white transition-colors duration-1000 border-collapse text-center ';
 	const tableHeaderStyle = 'bg-gray-200 text-xl';
-	const rowHoverStyle = 'hover:bg-gray-100 transition-colors duration-1000 dark:hover:bg-gray-700';
+	const rowHoverStyle =
+		'hover:bg-gray-100 transition-colors duration-1000 dark:hover:bg-gray-700 hover:cursor-pointer';
 	const orderValues = [
 		'id',
 		'name',
@@ -139,8 +140,8 @@
 		getData();
 	}
 	function buttonNumber() {
-		let startPage: number = Math.max(1,page-1);
-		let endPage: number = page+1;
+		let startPage: number = Math.max(1, page - 1);
+		let endPage: number = page + 1;
 		buttonArray = [];
 		let numOfButtons = Math.ceil(dataCount / size);
 		let i = 1;
@@ -149,23 +150,18 @@
 				buttonArray.push(i);
 			}
 		} else {
-		
-		for(i = startPage;i <= endPage;i++)
-		{
-			buttonArray.push(i)
+			for (i = startPage; i <= endPage; i++) {
+				buttonArray.push(i);
+			}
+			if (endPage < numOfButtons - 1) {
+				buttonArray.push(-1);
+			}
 		}
-		if(endPage < numOfButtons-1)
-		{
-			buttonArray.push(-1)
-		}
-		}
-		if(!buttonArray.includes(numOfButtons))
-		{
+		if (!buttonArray.includes(numOfButtons)) {
 			buttonArray.push(numOfButtons);
 		}
-		if(buttonArray.includes(numOfButtons+1))
-		{
-			buttonArray.pop()
+		if (buttonArray.includes(numOfButtons + 1)) {
+			buttonArray.pop();
 		}
 	}
 	function sizeChange() {
@@ -198,27 +194,10 @@
 		} else if (loading) {
 			setTimeout(() => requestAnimationFrame(loadAnimate), 500);
 		}
-
 	}
 </script>
 
-<div class="m-4 flex flex-col justify-center rounded-[10px] py-4 outline-1 outline-gray-300">
-	<select
-		id="size"
-		onchange={sizeChange}
-		class="m-auto w-64 rounded-[5px] border-1 p-2 dark:bg-gray-800 dark:text-white"
-	>
-		<option value="1">Show 1 row</option>
-		{#if dataCount >= 2}<option value="2">Show 2 rows</option>{/if}
-		{#if dataCount >= 3}<option value="3">Show 3 rows</option>{/if}
-		{#if dataCount >= 4}<option value="4">Show 4 rows</option>{/if}
-		{#if dataCount >= 5}<option value="5">Show 5 rows</option>{/if}
-		{#if dataCount >= 10}<option value="10">Show 10 rows</option>{/if}
-		{#if dataCount >= 15}<option value="15">Show 15 rows</option>{/if}
-		{#if dataCount >= 20}<option value="20">Show 20 rows</option>{/if}
-		{#if dataCount >= 25}<option value="25">Show 25 rows</option>{/if}
-		<option value={dataCount}>Show all rows</option>
-	</select>
+<div class="m-4 flex flex-col justify-center rounded-[10px] py-4 outline-6 outline-gray-300">
 	{#if loading}
 		<p class="text-center text-3xl dark:text-white" id="load">loading</p>
 	{:else if listOfItems}
@@ -229,31 +208,52 @@
 						onclick={() => {
 							order == 'id' ? orderBy('-id') : orderBy('id');
 						}}
-						class={tableHeaderStyle}>ID{(order == 'id'|| order == '-id')? order.startsWith('-')? '🠗':'🠕': ''}</th
+						class={tableHeaderStyle}
+						>ID{order == 'id' || order == '-id' ? (order.startsWith('-') ? '🠗' : '🠕') : ''}</th
 					>
 					<th
 						onclick={() => {
 							order == 'name' ? orderBy('-name') : orderBy('name');
 						}}
-						class={tableHeaderStyle}>Name {(order == 'name'|| order == '-name')? order.startsWith('-')? '🠗':'🠕': ''}</th
+						class={tableHeaderStyle}
+						>Name {order == 'name' || order == '-name'
+							? order.startsWith('-')
+								? '🠗'
+								: '🠕'
+							: ''}</th
 					>
 					<th
 						onclick={() => {
 							order == 'email' ? orderBy('-email') : orderBy('email');
 						}}
-						class={tableHeaderStyle}>Email {(order == 'email'|| order == '-email')? order.startsWith('-')? '🠗':'🠕': ''}</th
+						class={tableHeaderStyle}
+						>Email {order == 'email' || order == '-email'
+							? order.startsWith('-')
+								? '🠗'
+								: '🠕'
+							: ''}</th
 					>
 					<th
 						onclick={() => {
 							order == 'birthdate' ? orderBy('-birthdate') : orderBy('birthdate');
 						}}
-						class={tableHeaderStyle}>Birthdate {(order == 'birthdate'|| order == '-birthdate')? order.startsWith('-')? '🠗':'🠕': ''}</th
+						class={tableHeaderStyle}
+						>Birthdate {order == 'birthdate' || order == '-birthdate'
+							? order.startsWith('-')
+								? '🠗'
+								: '🠕'
+							: ''}</th
 					>
 					<th
 						onclick={() => {
 							order == 'city' ? orderBy('-city') : orderBy('city');
 						}}
-						class={tableHeaderStyle}>City {(order == 'city'|| order == '-city')? order.startsWith('-')? '🠗':'🠕': ''}</th
+						class={tableHeaderStyle}
+						>City {order == 'city' || order == '-city'
+							? order.startsWith('-')
+								? '🠗'
+								: '🠕'
+							: ''}</th
 					>
 				</tr>
 			</thead>
@@ -269,7 +269,8 @@
 				{/each}
 			</tbody>
 		</table>
-		<div class="flex justify-between">
+		<div class="flex justify-around">
+			<div class="flex justify-between gap-[50px]">
 			<button
 				class={buttonArrow(true)}
 				onclick={() => {
@@ -281,7 +282,7 @@
 			<div class="flex justify-center">
 				{#each buttonArray as btn}
 					{#if btn === -1}
-						<p class="text-gray-500 my-auto text-xl">...</p>
+						<p class="my-auto text-xl text-gray-500">...</p>
 					{:else}
 						<button
 							class={buttonNumberStyle(btn === page)}
@@ -305,6 +306,23 @@
 					}
 				}}>next &gt;</button
 			>
+			</div>
+			<select
+				id="size"
+				onchange={sizeChange}
+				class="m-auto w-64 rounded-[5px] border-1 p-2 dark:bg-gray-800 dark:text-white"
+			>
+				<option value="1">Show 1 row</option>
+				{#if dataCount >= 2}<option value="2">Show 2 rows</option>{/if}
+				{#if dataCount >= 3}<option value="3">Show 3 rows</option>{/if}
+				{#if dataCount >= 4}<option value="4">Show 4 rows</option>{/if}
+				{#if dataCount >= 5}<option value="5">Show 5 rows</option>{/if}
+				{#if dataCount >= 10}<option value="10">Show 10 rows</option>{/if}
+				{#if dataCount >= 15}<option value="15">Show 15 rows</option>{/if}
+				{#if dataCount >= 20}<option value="20">Show 20 rows</option>{/if}
+				{#if dataCount >= 25}<option value="25">Show 25 rows</option>{/if}
+				<option value={dataCount}>Show all rows</option>
+			</select>
 		</div>
 		<p>Showing {listOfItems.length} of {dataCount} results</p>
 	{:else}
