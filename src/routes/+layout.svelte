@@ -7,9 +7,15 @@
 	onMount(() => {
 		dark = localStorage.getItem('theme') === 'dark';
 		document.documentElement.classList.toggle('dark', dark);
-		document.documentElement.classList.add('dark:bg-gray-900');
+		document.documentElement.classList.add('dark:to-purple-600');
+		document.documentElement.classList.add('dark:from-gray-600');
 		document.documentElement.classList.add('transition-colors');
 		document.documentElement.classList.add('duration-1000');
+		document.documentElement.classList.add('bg-linear-to-tr');
+		document.documentElement.classList.add('from-white');
+		document.documentElement.classList.add('to-purple-500');
+		document.documentElement.classList.add('h-screen');
+		document.documentElement.classList.add('bg-no-repeat');
 	});
 	function toggleDarkMode() {
 		dark = !dark;

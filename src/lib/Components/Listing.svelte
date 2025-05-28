@@ -106,7 +106,7 @@
 		}
 	}
 	function buttonArrow(side: boolean) {
-		let buttonActive = 'bg-gray-100 dark:text-gray-600';
+		let buttonActive = 'bg-gray-100 dark:text-white dark:bg-gray-900';
 		let buttonNotActive = 'text-gray-800 dark:bg-gray-700 dark:text-white';
 		return twMerge(
 			'inline-block w-auto p-2 rounded-[10px] my-2 text-xl',
@@ -115,7 +115,7 @@
 	}
 	function buttonNumberStyle(side: boolean) {
 		let buttonActive = 'bg-blue-200 dark:text-gray-600';
-		let buttonNotActive = 'text-gray-800 dark:bg-gray-700 dark:text-white';
+		let buttonNotActive = 'text-gray-800 dark:text-white';
 		return twMerge(
 			'inline-block w-12 p-2 rounded-[20px] my-2 text-xl',
 			side ? buttonActive : buttonNotActive
@@ -170,7 +170,7 @@
 		page = 1;
 		updateURL();
 		getData();
-	}
+;	}
 	function loadAnimate() {
 		if (loading && document.getElementById('load')) {
 			let handler = document.getElementById('load') as HTMLDivElement;
@@ -197,7 +197,7 @@
 	}
 </script>
 
-<div class="m-4 flex flex-col justify-center rounded-[10px] py-4 outline-6 outline-gray-300">
+<div class="m-4 flex flex-col justify-center rounded-[10px] py-4 outline-6 outline-gray-300 bg-white dark:bg-gray-900 transition-colors duration-1000">
 	{#if loading}
 		<p class="text-center text-3xl dark:text-white" id="load">loading</p>
 	{:else if listOfItems}
@@ -321,11 +321,11 @@
 				{#if dataCount >= 15}<option value="15">Show 15 rows</option>{/if}
 				{#if dataCount >= 20}<option value="20">Show 20 rows</option>{/if}
 				{#if dataCount >= 25}<option value="25">Show 25 rows</option>{/if}
-				<option value={dataCount}>Show all rows</option>
+				<option value={dataCount} id="all">Show all rows</option>
 			</select>
 		</div>
-		<p>Showing {listOfItems.length} of {dataCount} results</p>
+		<p class="dark:text-white transition-colors duration-1000">Showing {listOfItems.length} of {dataCount} results</p>
 	{:else}
-		<p class="dark: text-center text-white">No data, or connection failed</p>
+		<p class="dark: text-center text-white transition-colors duration-1000">No data, or connection failed</p>
 	{/if}
 </div>

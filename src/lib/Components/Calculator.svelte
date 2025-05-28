@@ -100,7 +100,7 @@
 	}
 </script>
 
-<div class="m-auto h-full w-1/2 rounded-[20px] rounded-br-[200px]">
+<div class="m-auto h-full w-1/2 rounded-[20px] rounded-br-[200px] bg-white">
 	<form class="m-12 grid grid-cols-3 gap-x-2" method="post" onsubmit={send} autocomplete="off">
 		<div class="">
 			<p
