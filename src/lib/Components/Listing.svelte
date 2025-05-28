@@ -113,10 +113,10 @@
 		);
 	}
 	function buttonNumberStyle(side: boolean) {
-		let buttonActive = 'bg-gray-100 dark:text-gray-600';
+		let buttonActive = 'bg-blue-200 dark:text-gray-600';
 		let buttonNotActive = 'text-gray-800 dark:bg-gray-700 dark:text-white';
 		return twMerge(
-			'inline-block w-12 p-2 rounded-[20px] my-2 text-xl bg-blue-200',
+			'inline-block w-12 p-2 rounded-[20px] my-2 text-xl',
 			side ? buttonActive : buttonNotActive
 		);
 	}
@@ -198,7 +198,7 @@
 		} else if (loading) {
 			setTimeout(() => requestAnimationFrame(loadAnimate), 500);
 		}
-		console.log(index)
+
 	}
 </script>
 
@@ -229,31 +229,31 @@
 						onclick={() => {
 							order == 'id' ? orderBy('-id') : orderBy('id');
 						}}
-						class={tableHeaderStyle}>ID</th
+						class={tableHeaderStyle}>ID{(order == 'id'|| order == '-id')? order.startsWith('-')? '🠗':'🠕': ''}</th
 					>
 					<th
 						onclick={() => {
 							order == 'name' ? orderBy('-name') : orderBy('name');
 						}}
-						class={tableHeaderStyle}>Name</th
+						class={tableHeaderStyle}>Name {(order == 'name'|| order == '-name')? order.startsWith('-')? '🠗':'🠕': ''}</th
 					>
 					<th
 						onclick={() => {
 							order == 'email' ? orderBy('-email') : orderBy('email');
 						}}
-						class={tableHeaderStyle}>Email</th
+						class={tableHeaderStyle}>Email {(order == 'email'|| order == '-email')? order.startsWith('-')? '🠗':'🠕': ''}</th
 					>
 					<th
 						onclick={() => {
 							order == 'birthdate' ? orderBy('-birthdate') : orderBy('birthdate');
 						}}
-						class={tableHeaderStyle}>Birthdate</th
+						class={tableHeaderStyle}>Birthdate {(order == 'birthdate'|| order == '-birthdate')? order.startsWith('-')? '🠗':'🠕': ''}</th
 					>
 					<th
 						onclick={() => {
 							order == 'city' ? orderBy('-city') : orderBy('city');
 						}}
-						class={tableHeaderStyle}>City</th
+						class={tableHeaderStyle}>City {(order == 'city'|| order == '-city')? order.startsWith('-')? '🠗':'🠕': ''}</th
 					>
 				</tr>
 			</thead>
@@ -306,6 +306,7 @@
 				}}>next &gt;</button
 			>
 		</div>
+		<p>Showing {listOfItems.length} of {dataCount} results</p>
 	{:else}
 		<p class="dark: text-center text-white">No data, or connection failed</p>
 	{/if}
