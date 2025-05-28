@@ -26,11 +26,6 @@
 	function toggleNav() {
 		navVisible = !navVisible;
 	}
-	function getNumOfRows() {
-		let handler = document.getElementById('count') as HTMLInputElement;
-		let value = handler.value;
-		window.dispatchEvent(new CustomEvent('numOfRowsSet',{ detail: {value } }));
-	}
 	let { children } = $props();
 </script>
 

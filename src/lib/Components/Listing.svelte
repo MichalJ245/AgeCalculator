@@ -2,6 +2,7 @@
 	import { twMerge } from 'tailwind-merge';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { scale } from 'svelte/transition';
 	let listOfItems: Array<{
 		id: number;
 		name: string;
@@ -30,6 +31,9 @@
 		| '-birthdate'
 		| '-city'
 		| string = $state('id');
+	let name: string = $state('');
+	let email: string = $state('');
+	let filterVisible: boolean = $state(false);
 	const tableStyle =
 		'border-b-[1px] border-gray-300 p-2 dark:border-white dark:text-white transition-colors duration-1000 border-collapse text-center p-5 text-2xl font-semibold';
 	const tableHeaderStyle = 'bg-gray-200 text-xl p-2';
@@ -51,7 +55,7 @@
 		try {
 			loading = true;
 			loadAnimate();
-			const r1 = await fetch(`http://192.168.0.216:8000/users/api/submissions/?`);
+			const r1 = await fetch(`http://192.168.0.216:8000/users/api/submissions/?page=1&page_size=1`);
 			jsonFile = await r1.json();
 			dataCount = jsonFile.count;
 			if (size > dataCount || Number.isNaN(size) || size < 1) {
@@ -63,9 +67,20 @@
 			if (!orderValues.includes(order)) {
 				order = 'id';
 			}
-			const response = await fetch(
-				`http://192.168.0.216:8000/users/api/submissions/?ordering=${order}&page=${page}&page_size=${size}`
-			);
+			let response;
+			if (name === '' && email ==='') {
+				response = await fetch(
+					`http://192.168.0.216:8000/users/api/submissions/?&ordering=${order}&page=${page}&page_size=${size}`
+				);
+			} else if (email === '') {
+				response = await fetch(
+					`http://192.168.0.216:8000/users/api/submissions/?name=${name}&ordering=${order}&page=${page}&page_size=${size}`
+				);
+			} else {
+				response = await fetch(
+					`http://192.168.0.216:8000/users/api/submissions/?email=${email}&ordering=${order}&page=${page}&page_size=${size}`
+				);
+			}
 			jsonFile = await response.json();
 			listOfItems = jsonFile.results;
 			next = jsonFile.next;
@@ -195,6 +210,19 @@
 			setTimeout(() => requestAnimationFrame(loadAnimate), 500);
 		}
 	}
+	function getParams() {
+		let nameHandler = document.getElementById('name') as HTMLInputElement;
+		let emailHandler = document.getElementById('email') as HTMLInputElement;
+		name = nameHandler.value;
+		email = emailHandler.value;
+		console.log('name: '+name)
+		console.log('email: '+email)
+		getData();
+	}
+	function filterToggle()
+	{
+		filterVisible = !filterVisible;
+	}
 </script>
 
 <div
@@ -202,7 +230,59 @@
 >
 	{#if loading}
 		<p class="text-center text-3xl dark:text-white" id="load">loading</p>
-	{:else if listOfItems}
+	{:else if listOfItems.length > 0}
+		<div class="relative">
+			<button
+			aria-label="button"
+			class="ml-[90%]"
+			onclick={filterToggle}
+				><svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="48"
+					height="48"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					class="icon icon-tabler icons-tabler-outline icon-tabler-filter dark:text-white"
+					><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path
+						d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z"
+					/></svg
+				></button
+			>
+			{#if filterVisible}
+			<form autocomplete="off" id="form" class="absolute bg-white w-auto ml-[60%] dark:bg-gray-900 grid grid-cols-2 transition-colors border-1 p-2 rounded-[10px] dark:border-gray-700 duration-1000" transition:scale>
+				<label
+					for="name"
+					class="m-2 inline text-2xl transition-colors duration-1000 dark:text-white"
+					>Find in names:</label
+				>
+				<input
+					type="text"
+					id="name"
+					class="m-2 inline w-auto rounded-[10px] border-1 p-2 text-xl transition-colors duration-1000 dark:border-white dark:text-white"
+				/>
+				<label
+					for="email"
+					class="m-2 inline text-2xl transition-colors duration-1000 dark:text-white"
+					>Find in emails:</label
+				>
+				<input
+					type="text"
+					id="email"
+					class="m-2 inline w-auto rounded-[10px] border-1 p-2 text-xl transition-colors duration-1000 dark:border-white dark:text-white"
+				/>
+				<input
+					type="button"
+					onclick={() => {filterToggle();getParams()}}
+					class="h-12 w-24 rounded-[10px] bg-purple-500 text-xl font-semibold text-white dark:bg-purple-600transition-colors duration-1000 hover:cursor-pointer"
+					value="apply"
+				/>
+			</form>
+			{/if}
+		</div>
 		<table class="my-2">
 			<thead>
 				<tr>
@@ -211,7 +291,7 @@
 							order == 'id' ? orderBy('-id') : orderBy('id');
 						}}
 						class={tableHeaderStyle}
-						>ID <svg
+						>ID&nbsp;<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="24"
 							height="24"
@@ -230,7 +310,7 @@
 							order == 'name' ? orderBy('-name') : orderBy('name');
 						}}
 						class={tableHeaderStyle}
-						>Name<svg
+						>Name&nbsp;<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="24"
 							height="24"
@@ -249,7 +329,7 @@
 							order == 'email' ? orderBy('-email') : orderBy('email');
 						}}
 						class={tableHeaderStyle}
-						>Email<svg
+						>Email&nbsp;<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="24"
 							height="24"
@@ -268,7 +348,7 @@
 							order == 'birthdate' ? orderBy('-birthdate') : orderBy('birthdate');
 						}}
 						class={tableHeaderStyle}
-						>Birthdate<svg
+						>Birthdate&nbsp;<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="24"
 							height="24"
@@ -287,7 +367,7 @@
 							order == 'city' ? orderBy('-city') : orderBy('city');
 						}}
 						class={tableHeaderStyle}
-						>City<svg
+						>City&nbsp;<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="24"
 							height="24"
