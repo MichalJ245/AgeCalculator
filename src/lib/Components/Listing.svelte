@@ -68,17 +68,21 @@
 				order = 'id';
 			}
 			let response;
-			if (name === '' && email ==='') {
+			if (name === '' && email === '') {
 				response = await fetch(
 					`http://192.168.0.216:8000/users/api/submissions/?&ordering=${order}&page=${page}&page_size=${size}`
 				);
-			} else if (email === '') {
+			} else if (name != '' && email == '') {
 				response = await fetch(
 					`http://192.168.0.216:8000/users/api/submissions/?name=${name}&ordering=${order}&page=${page}&page_size=${size}`
 				);
-			} else {
+			} else if (name == '' && email != '') {
 				response = await fetch(
 					`http://192.168.0.216:8000/users/api/submissions/?email=${email}&ordering=${order}&page=${page}&page_size=${size}`
+				);
+			} else {
+				response = await fetch(
+					`http://192.168.0.216:8000/users/api/submissions/?name=${name}&email=${email}&ordering=${order}&page=${page}&page_size=${size}`
 				);
 			}
 			jsonFile = await response.json();
@@ -96,7 +100,16 @@
 		}
 	};
 	function updateURL() {
-		let param = `ordering=${order}&page=${page}&page_size=${size}`;
+		let param;
+		if (name == '' && email == '') {
+			param = `ordering=${order}&page=${page}&page_size=${size}`;
+		} else if (name == '' && email != '') {
+			param = `email=${email}&ordering=${order}&page=${page}&page_size=${size}`;
+		} else if (name != '' && email == '') {
+			param = `name=${name}&ordering=${order}&page=${page}&page_size=${size}`;
+		} else {
+			param = `email=${email}&name=${name}&ordering=${order}&page=${page}&page_size=${size}`;
+		}
 		goto(`?${param}`);
 	}
 	onMount(() => {
@@ -104,6 +117,16 @@
 		order = String(params.get('ordering') || 'id');
 		page = parseInt(params.get('page') || '1');
 		size = parseInt(params.get('page_size') || '1');
+		if (params.get('name') != null) {
+			name = String(params.get('name'));
+		} else {
+			name = '';
+		}
+		if (params.get('email')) {
+			name = String(params.get('email'));
+		} else {
+			email = '';
+		}
 		updateURL();
 		getData();
 	});
@@ -191,16 +214,19 @@
 			let handler = document.getElementById('load') as HTMLDivElement;
 			switch (index) {
 				case 0:
-					handler.innerHTML = 'loading.';
+					handler.innerHTML = 'loading';
 					break;
 				case 1:
-					handler.innerHTML = 'loading..';
+					handler.innerHTML = 'loading.';
 					break;
 				case 2:
+					handler.innerHTML = 'loading..';
+					break;
+				case 3:
 					handler.innerHTML = 'loading...';
 					break;
 			}
-			if (index <= 1) {
+			if (index <= 2) {
 				index++;
 			} else {
 				index = 0;
@@ -215,12 +241,12 @@
 		let emailHandler = document.getElementById('email') as HTMLInputElement;
 		name = nameHandler.value;
 		email = emailHandler.value;
-		console.log('name: '+name)
-		console.log('email: '+email)
+		console.log('name: ' + name);
+		console.log('email: ' + email);
 		getData();
+		updateURL();
 	}
-	function filterToggle()
-	{
+	function filterToggle() {
 		filterVisible = !filterVisible;
 	}
 </script>
@@ -232,10 +258,7 @@
 		<p class="text-center text-3xl dark:text-white" id="load">loading</p>
 	{:else if listOfItems.length > 0}
 		<div class="relative">
-			<button
-			aria-label="button"
-			class="ml-[90%]"
-			onclick={filterToggle}
+			<button aria-label="button" class="ml-[90%]" onclick={filterToggle}
 				><svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="48"
@@ -253,34 +276,71 @@
 				></button
 			>
 			{#if filterVisible}
-			<form autocomplete="off" id="form" class="absolute bg-white w-auto ml-[60%] dark:bg-gray-900 grid grid-cols-2 transition-colors border-1 p-2 rounded-[10px] dark:border-gray-700 duration-1000" transition:scale>
-				<label
-					for="name"
-					class="m-2 inline text-2xl transition-colors duration-1000 dark:text-white"
-					>Find in names:</label
+				<form
+					autocomplete="off"
+					id="form"
+					class="absolute ml-[60%] grid w-auto grid-cols-2 rounded-[10px] border-1 bg-white p-2 transition-colors duration-1000 dark:border-gray-700 dark:bg-gray-900"
+					transition:scale
 				>
-				<input
-					type="text"
-					id="name"
-					class="m-2 inline w-auto rounded-[10px] border-1 p-2 text-xl transition-colors duration-1000 dark:border-white dark:text-white"
-				/>
-				<label
-					for="email"
-					class="m-2 inline text-2xl transition-colors duration-1000 dark:text-white"
-					>Find in emails:</label
-				>
-				<input
-					type="text"
-					id="email"
-					class="m-2 inline w-auto rounded-[10px] border-1 p-2 text-xl transition-colors duration-1000 dark:border-white dark:text-white"
-				/>
-				<input
-					type="button"
-					onclick={() => {filterToggle();getParams()}}
-					class="h-12 w-24 rounded-[10px] bg-purple-500 text-xl font-semibold text-white dark:bg-purple-600transition-colors duration-1000 hover:cursor-pointer"
-					value="apply"
-				/>
-			</form>
+					<label
+						for="name"
+						class="m-2 inline text-2xl transition-colors duration-1000 dark:text-white"
+						><svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="24"
+							height="24"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="icon icon-tabler icons-tabler-outline icon-tabler-user inline"
+							><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path
+								d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"
+							/><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg
+						> Find in names:</label
+					>
+					<input
+						type="text"
+						id="name"
+						class="m-2 inline w-auto rounded-[10px] border-1 p-2 text-xl transition-colors duration-1000 dark:border-white dark:text-white"
+					/>
+					<label
+						for="email"
+						class="m-2 inline text-2xl transition-colors duration-1000 dark:text-white"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="24"
+							height="24"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="icon icon-tabler icons-tabler-outline icon-tabler-mail inline"
+							><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path
+								d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"
+							/><path d="M3 7l9 6l9 -6" /></svg
+						> Find in emails:</label
+					>
+					<input
+						type="text"
+						id="email"
+						class="m-2 inline w-auto rounded-[10px] border-1 p-2 text-xl transition-colors duration-1000 dark:border-white dark:text-white"
+					/>
+					<input
+						type="button"
+						onclick={() => {
+							filterToggle();
+							getParams();
+						}}
+						class="dark:bg-purple-600transition-colors h-12 w-24 rounded-[10px] bg-purple-500 text-xl font-semibold text-white duration-1000 hover:cursor-pointer"
+						value="apply"
+					/>
+				</form>
 			{/if}
 		</div>
 		<table class="my-2">
