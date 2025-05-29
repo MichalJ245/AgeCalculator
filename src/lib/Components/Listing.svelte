@@ -95,6 +95,8 @@
 			buttonNumber();
 			loading = false;
 			index = 0;
+			setTimeout(() => document.getElementById('name')?.addEventListener('input',debounceSearch),100);
+			setTimeout(() => document.getElementById('email')?.addEventListener('input',debounceSearch),100);
 		} catch (e) {
 			console.log(e);
 		}
@@ -123,7 +125,7 @@
 			name = '';
 		}
 		if (params.get('email')) {
-			name = String(params.get('email'));
+			email = String(params.get('email'));
 		} else {
 			email = '';
 		}
@@ -240,13 +242,25 @@
 		let nameHandler = document.getElementById('name') as HTMLInputElement;
 		let emailHandler = document.getElementById('email') as HTMLInputElement;
 		name = nameHandler.value;
-		//email = emailHandler.value;
-		email = '';
+		email = emailHandler.value;
 		getData();
 		updateURL();
 	}
+	function debounce<T extends (...args: any[]) => void>(func: T, delay: number){
+		let timeout: ReturnType<typeof setTimeout> | null = null;
+			return function(this:unknown, ...args: Parameters<T>)
+				{
+					if(timeout != null) 
+					{clearTimeout(timeout);}
+					timeout = setTimeout(() => func.apply(this, args),delay);
+					console.log('aaa')
+				}
+	}
+	const debounceSearch = debounce(getParams,1000);
 	function filterToggle() {
 		filterVisible = !filterVisible;
+		setTimeout(() => document.getElementById('name')?.addEventListener('input',debounceSearch),100);
+		setTimeout(() => document.getElementById('email')?.addEventListener('input',debounceSearch),100);
 	}
 </script>
 
@@ -305,7 +319,7 @@
 						id="name"
 						class="m-2 inline w-auto rounded-[10px] border-1 p-2 text-xl transition-colors duration-1000 dark:border-white dark:text-white"
 					/>
-					<!--<label
+					<label
 						for="email"
 						class="m-2 inline text-2xl transition-colors duration-1000 dark:text-white"
 					>
@@ -329,15 +343,6 @@
 						type="text"
 						id="email"
 						class="m-2 inline w-auto rounded-[10px] border-1 p-2 text-xl transition-colors duration-1000 dark:border-white dark:text-white"
-					/>-->
-					<input
-						type="button"
-						onclick={() => {
-							filterToggle();
-							getParams();
-						}}
-						class="dark:bg-purple-600transition-colors h-12 w-24 rounded-[10px] bg-purple-500 text-xl font-semibold text-white duration-1000 hover:cursor-pointer"
-						value="apply"
 					/>
 				</form>
 			{/if}
