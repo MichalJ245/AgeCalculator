@@ -240,9 +240,8 @@
 		let nameHandler = document.getElementById('name') as HTMLInputElement;
 		let emailHandler = document.getElementById('email') as HTMLInputElement;
 		name = nameHandler.value;
-		email = emailHandler.value;
-		console.log('name: ' + name);
-		console.log('email: ' + email);
+		//email = emailHandler.value;
+		email = '';
 		getData();
 		updateURL();
 	}
@@ -306,7 +305,7 @@
 						id="name"
 						class="m-2 inline w-auto rounded-[10px] border-1 p-2 text-xl transition-colors duration-1000 dark:border-white dark:text-white"
 					/>
-					<label
+					<!--<label
 						for="email"
 						class="m-2 inline text-2xl transition-colors duration-1000 dark:text-white"
 					>
@@ -330,7 +329,7 @@
 						type="text"
 						id="email"
 						class="m-2 inline w-auto rounded-[10px] border-1 p-2 text-xl transition-colors duration-1000 dark:border-white dark:text-white"
-					/>
+					/>-->
 					<input
 						type="button"
 						onclick={() => {
