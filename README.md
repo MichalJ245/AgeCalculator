@@ -2,3 +2,4 @@
 ![tabelka3](https://github.com/user-attachments/assets/7ba993e6-29b0-45ac-9007-8741a8c4e153)
 ![tabelka2](https://github.com/user-attachments/assets/3609322e-485b-428e-9f73-8e1e0bea2486)
 ![tabelka1](https://github.com/user-attachments/assets/f574452e-1760-479c-a136-9e5babbb94af)
+![tabelkaPoprawione](https://github.com/user-attachments/assets/4621c35d-42f1-48b0-a13e-8dcd9b19fbfc)
