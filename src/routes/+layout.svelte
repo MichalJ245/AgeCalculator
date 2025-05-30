@@ -54,3 +54,4 @@
 	</nav>
 {/if}
 {@render children()}
+<p>Made with <a href="https://tabler.io/icons">Tabler</a></p>
