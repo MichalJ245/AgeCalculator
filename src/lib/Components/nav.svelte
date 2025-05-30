@@ -9,7 +9,7 @@ function buttonNumberStyle(side: boolean) {
 		let buttonActive = 'bg-blue-200 dark:text-white dark:bg-blue-400';
 		let buttonNotActive = 'text-gray-800 dark:text-white';
 		return twMerge(
-			'inline-block w-12 p-2 rounded-[20px] my-2 text-xl hover:cursor-pointer',
+			'inline-block w-12 p-2 rounded-[20px] my-2 text-xl hover:cursor-pointer transition-colors duration-1000',
 			side ? buttonActive : buttonNotActive
 		);
 	}

@@ -2,7 +2,7 @@
 	import CalcForm from '$lib/Components/calcForm.svelte';
 	import DisplayAge from '$lib/Components/displayAge.svelte';
 </script>
-<div class="m-auto h-full w-1/2 rounded-[20px] rounded-br-[200px] bg-white dark:bg-gray-900">
+<div class="m-auto h-full xl:w-1/2 md:w-2/3 sm:3/4 rounded-[20px] rounded-br-[200px] bg-white dark:bg-gray-900 p-4">
 	<CalcForm />
 	<DisplayAge />
 </div>

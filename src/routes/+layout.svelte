@@ -54,4 +54,4 @@
 	</nav>
 {/if}
 {@render children()}
-<p>Made with <a href="https://tabler.io/icons">Tabler</a></p>
+<p class="bg-purple-500 text-white p-2 inline rounded-[10px] dark:bg-purple-600 transition-colors duration-1000">Made with <a href="https://tabler.io/icons">Tabler</a></p>
